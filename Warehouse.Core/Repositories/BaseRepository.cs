@@ -17,40 +17,39 @@ namespace Warehouse.Infrastructure.Repositories
     {
         public BaseRepository(IOptions<MongoDbConfiguration> settings) : base(settings) { }
 
-        public async Task Delete(string id)
+        public async Task Delete(string id, CancellationToken cancellationToken)
         {
-            await Collection.DeleteOneAsync(GetFilterForId(id));
+            await Collection.DeleteOneAsync(GetFilterForId(id), cancellationToken);
         }
 
-        public async Task<TEntity> Get(string id)
+        public async Task<TEntity> Get(string id, CancellationToken cancellationToken)
         {
-           return await Collection.Find(GetFilterForId(id)).FirstOrDefaultAsync();
+           return await Collection.Find(GetFilterForId(id)).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<IList<TEntity>> GetAll()
+        public async Task<IList<TEntity>> GetAll(CancellationToken cancellationToken)
         {
-            return await Collection.Find(FilterDefinition<TEntity>.Empty).ToListAsync();
+            return await Collection.Find(FilterDefinition<TEntity>.Empty).ToListAsync(cancellationToken);
         }
 
-        public async Task<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate) 
+        public async Task<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken) 
         {
-            return await GetFiltered(predicate).FirstOrDefaultAsync();
+            return await GetFiltered(predicate).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task Insert(TEntity entity)
+        public async Task Insert(TEntity entity, CancellationToken cancellationToken)
         {
-            await Collection.InsertOneAsync(entity);
+            await Collection.InsertOneAsync(entity, null, cancellationToken);
         }
 
-        public async Task InsertRange(IEnumerable<TEntity> entities)
+        public async Task InsertRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await Collection.InsertManyAsync(entities);
+            await Collection.InsertManyAsync(entities, null, cancellationToken);
         }
 
-        public async Task<TEntity> Update(string id, TEntity entity)
-        {       
-            await Collection.ReplaceOneAsync(GetFilterForId(id), entity);
-            return await Get(id);
+        public async Task Update(string id, TEntity entity, CancellationToken cancellationToken)
+        {
+            await Collection.ReplaceOneAsync(GetFilterForId(id), entity, new ReplaceOptions { IsUpsert = true }, cancellationToken);            
         }
         private IMongoQueryable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> predicate)
         {

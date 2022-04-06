@@ -13,5 +13,6 @@ namespace Warehouse.Infrastructure.Repositories
     public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
         public ProductRepository(IOptions<MongoDbConfiguration> settings) : base(settings) { }
+
     }
 }

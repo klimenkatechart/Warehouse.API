@@ -1,5 +1,3 @@
-using MongoDB.Driver;
-using Warehouse.API;
 using Warehouse.Application;
 using Warehouse.Domain.Helpers;
 using Warehouse.Infrastructure;
@@ -13,9 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
+builder.Services.AddApplication();
+
 
 
 builder.Services.Configure<MongoDbConfiguration>(builder.Configuration.GetSection("MongoConnectionSettings"));

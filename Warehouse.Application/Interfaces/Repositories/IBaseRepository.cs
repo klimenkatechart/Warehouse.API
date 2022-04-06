@@ -8,11 +8,11 @@ namespace Warehouse.Application.Interfaces.Repositories
 {
     public interface IBaseRepository<TEntity>
     {
-        public Task Delete(string id);
-        public Task<TEntity> Get(string id);
-        public Task<IList<TEntity>> GetAll();
-        public Task Insert(TEntity entity);
-        public Task InsertRange(IEnumerable<TEntity> entities);
-        public Task<TEntity> Update(string id, TEntity entity);
+        public Task Delete(string id, CancellationToken cancellationToken);
+        public Task<TEntity> Get(string id, CancellationToken cancellationToken);
+        public Task<IList<TEntity>> GetAll(CancellationToken cancellationToken);
+        public Task Insert(TEntity entity, CancellationToken cancellationToken);
+        public Task InsertRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
+        public Task Update(string id, TEntity entity, CancellationToken cancellationToken);
     };
 }

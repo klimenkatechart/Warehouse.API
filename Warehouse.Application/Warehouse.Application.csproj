@@ -12,11 +12,6 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Services\" />
-    <Folder Include="Mapping\" />
-    <Folder Include="MediatR\Handlers\" />
-    <Folder Include="MediatR\Commands\" />
-    <Folder Include="MediatR\Queries\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>

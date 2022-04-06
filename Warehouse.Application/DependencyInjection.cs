@@ -13,10 +13,13 @@ namespace Warehouse.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());       
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+          
             return services;
         }
+        
+
     }
 }
