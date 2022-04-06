@@ -1,46 +1,66 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Warehouse.Application.Interfaces.Repositories;
+using Warehouse.Domain.Entities;
 using Warehouse.Domain.Helpers;
 
 namespace Warehouse.Infrastructure.Repositories
 {
-    public class BaseRepository<TEntity> : MongoBaseContext<TEntity>
+    public class BaseRepository<TEntity> : MongoBaseContext<TEntity>, IBaseRepository<TEntity>
     {
         public BaseRepository(IOptions<MongoDbConfiguration> settings) : base(settings) { }
 
-        public Task Delete(string id)
+        public async Task Delete(string id)
         {
-            throw new NotImplementedException();
+            await Collection.DeleteOneAsync(GetFilterForId(id));
         }
 
-        public Task<TEntity> Get(string id)
+        public async Task<TEntity> Get(string id)
         {
-            throw new NotImplementedException();
+           return await Collection.Find(GetFilterForId(id)).FirstOrDefaultAsync();
         }
 
-        public Task<IList<TEntity>> GetAll(string id)
+        public async Task<IList<TEntity>> GetAll()
         {
-            throw new NotImplementedException();
+            return await Collection.Find(FilterDefinition<TEntity>.Empty).ToListAsync();
         }
 
-        public Task Insert(TEntity entity)
+        public async Task<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate) 
         {
-            return Collection.InsertOneAsync(entity);
+            return await GetFiltered(predicate).FirstOrDefaultAsync();
         }
 
-        public Task<TEntity> InsertRange(IEnumerable<TEntity> entities)
+        public async Task Insert(TEntity entity)
         {
-            throw new NotImplementedException();
+            await Collection.InsertOneAsync(entity);
         }
 
-        public Task<TEntity> Update(string id, TEntity entity)
+        public async Task InsertRange(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            await Collection.InsertManyAsync(entities);
+        }
+
+        public async Task<TEntity> Update(string id, TEntity entity)
+        {       
+            await Collection.ReplaceOneAsync(GetFilterForId(id), entity);
+            return await Get(id);
+        }
+        private IMongoQueryable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Collection.AsQueryable()
+                .Where(predicate);
+        }
+
+        private FilterDefinition<TEntity> GetFilterForId(string id)
+        {
+            return Builders<TEntity>.Filter.Eq("Id", id);
         }
     }
 }
