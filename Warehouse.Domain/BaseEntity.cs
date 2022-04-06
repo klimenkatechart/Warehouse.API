@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Warehouse.Domain
 {
-    public interface IEntity
+    public abstract class BaseEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

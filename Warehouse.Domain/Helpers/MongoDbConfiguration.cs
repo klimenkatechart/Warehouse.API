@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Warehouse.Domain.Helpers
 {
     public class MongoDbConfiguration
-    {  
+    {
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }

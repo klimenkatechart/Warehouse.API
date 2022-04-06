@@ -1,24 +1,17 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Warehouse.Domain.Helpers;
 
 namespace Warehouse.Infrastructure
 {
-    public class MongoBaseContext<T>
+    public class MongoBaseContext<TEntity>
     {
-        private readonly IMongoCollection<T> collection;
-        private readonly MongoDbConfiguration _settings;
+        private readonly IMongoDatabase database;
         public MongoBaseContext(IOptions<MongoDbConfiguration> settings)
         {
-            _settings = settings.Value;
-            var client = new MongoClient(_settings.ConnectionString);
-            var database = client.GetDatabase(_settings.DatabaseName);
-            collection = database.GetCollection<T>(nameof(T));
+            var client = new MongoClient(settings.Value.ConnectionString);
+            database = client.GetDatabase(settings.Value.DatabaseName);
         }
+        protected IMongoCollection<TEntity> Collection => database.GetCollection<TEntity>(typeof(TEntity).Name);
     }
 }
