@@ -13,6 +13,6 @@ namespace Warehouse.Application.Interfaces.Repositories
         public Task<IList<TEntity>> GetAll(CancellationToken cancellationToken);
         public Task Insert(TEntity entity, CancellationToken cancellationToken);
         public Task InsertRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
-        public Task Update(string id, TEntity entity, CancellationToken cancellationToken);
+        public Task Replace(string id, TEntity entity, CancellationToken cancellationToken);
     };
 }

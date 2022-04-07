@@ -24,9 +24,12 @@ namespace Warehouse.Application.MediatR.Handlers.ProductHandlers
 
         public async Task<IList<Product>> Handle(InsertRangeOfProductsCommand request, CancellationToken cancellationToken)
         {
-            var product = _mapper.Map<IList<Product>>(request.InputModels) ?? throw new NullReferenceException();
-            await _repository.InsertRange(product,cancellationToken);
-            return product;
+            var products = _mapper.Map<IList<Product>>(request.InputModels) ?? throw new NullReferenceException();
+            foreach(var product in products)
+            {
+                await _repository.AddNewProduct(product, cancellationToken);
+            }
+            return products;
         }
     }
 }

@@ -13,11 +13,9 @@ namespace Warehouse.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public readonly IMapper _mapper;
-        public ProductController(IMediator mediator, IMapper mapper)
+        public ProductController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
         [HttpGet("{id}")]

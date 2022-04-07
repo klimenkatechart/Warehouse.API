@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Warehouse.Application.Models.View
+namespace Warehouse.Domain.Enums
 {
-    public class CategoryViewMode
+    public enum ProductStockStatus
     {
+        OutOfStock,
+        LowStock,
+        InStock,
     }
 }

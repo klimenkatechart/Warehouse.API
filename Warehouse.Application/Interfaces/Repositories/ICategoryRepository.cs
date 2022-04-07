@@ -9,5 +9,7 @@ namespace Warehouse.Application.Interfaces.Repositories
 {
     public interface ICategoryRepository : IBaseRepository<Category>
     {
+        Task AddProductToCategory(Product product, string categoryId, CancellationToken cancellationToken);
+        Task RemoveProductFromCategory(Product product, CancellationToken cancellationToken);
     }
 }

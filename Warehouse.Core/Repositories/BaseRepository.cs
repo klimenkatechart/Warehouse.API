@@ -19,12 +19,12 @@ namespace Warehouse.Infrastructure.Repositories
 
         public async Task Delete(string id, CancellationToken cancellationToken)
         {
-            await Collection.DeleteOneAsync(GetFilterForId(id), cancellationToken);
+            await Collection.DeleteOneAsync(GetFilterForId<TEntity>(id), cancellationToken);
         }
 
         public async Task<TEntity> Get(string id, CancellationToken cancellationToken)
         {
-           return await Collection.Find(GetFilterForId(id)).FirstOrDefaultAsync(cancellationToken);
+           return await Collection.Find(GetFilterForId<TEntity>(id)).FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<IList<TEntity>> GetAll(CancellationToken cancellationToken)
@@ -47,9 +47,13 @@ namespace Warehouse.Infrastructure.Repositories
             await Collection.InsertManyAsync(entities, null, cancellationToken);
         }
 
+        public async Task Replace(string id, TEntity entity, CancellationToken cancellationToken)
+        {
+            await Collection.ReplaceOneAsync(GetFilterForId<TEntity>(id), entity, new ReplaceOptions { IsUpsert = true }, cancellationToken);            
+        }
         public async Task Update(string id, TEntity entity, CancellationToken cancellationToken)
         {
-            await Collection.ReplaceOneAsync(GetFilterForId(id), entity, new ReplaceOptions { IsUpsert = true }, cancellationToken);            
+            await Collection.ReplaceOneAsync(GetFilterForId<TEntity>(id), entity, new ReplaceOptions { IsUpsert = true }, cancellationToken);
         }
         private IMongoQueryable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> predicate)
         {
@@ -57,9 +61,9 @@ namespace Warehouse.Infrastructure.Repositories
                 .Where(predicate);
         }
 
-        private FilterDefinition<TEntity> GetFilterForId(string id)
+        protected FilterDefinition<T> GetFilterForId<T>(string id)
         {
-            return Builders<TEntity>.Filter.Eq("Id", id);
+            return Builders<T>.Filter.Eq("Id", id);
         }
     }
 }
