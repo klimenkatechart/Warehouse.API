@@ -7,7 +7,7 @@ using Warehouse.Domain.Enums;
 
 namespace Warehouse.Domain.Entities
 {
-    public class Order : BaseEntity
+    public class Order : BaseEntity<Order>
     {
         public string? ProductId { get; set; }
         public int AmmountOfItems { get; set; }

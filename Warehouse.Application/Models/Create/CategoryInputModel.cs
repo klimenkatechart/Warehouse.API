@@ -13,8 +13,10 @@ namespace Warehouse.Application.Models.Create
         public string? Name { get; set; }
         public string? Description { get; set; }
 
-        [Required(ErrorMessage = "Please provide a Stock Threshold")]
-        public int StockThreshold { get; set; }
+        [Required(ErrorMessage = "Please provide a LowStock limit")]
+        public int? LowStock { get; set; }
+        [Required(ErrorMessage = "Please provide a OutOfStock limit")]
+        public int? OutOfStock { get; set; }
 
 
     }

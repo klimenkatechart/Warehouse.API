@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Warehouse.Domain.Entities
 {
-    public class Category : BaseEntity
+    public class Category : BaseEntity<Category>
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
         public IList<string> ProductsIds { get; set; } = new List<string>();
-        public int? StockThreshold { get; set; }
+        public int? LowStock { get; set; }
+        public int? OutOfStock { get; set; }
     }
 }

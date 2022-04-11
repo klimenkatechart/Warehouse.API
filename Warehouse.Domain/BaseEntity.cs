@@ -1,17 +1,14 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Warehouse.Domain
+﻿namespace Warehouse.Domain
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity<TEntity>
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = new BsonObjectId(ObjectId.GenerateNewId()).ToString();
+        public string Id { get; set; } = IdGen();
+
+        private static string IdGen()
+        {
+            Random generator = new Random();
+            String id = generator.Next(0, 1000).ToString("D6");
+            return $"{typeof(TEntity).Name}{id}";
+        }
     }
 }

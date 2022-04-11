@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,6 @@ namespace Warehouse.Application.Interfaces.Repositories
         public Task Insert(TEntity entity, CancellationToken cancellationToken);
         public Task InsertRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
         public Task Replace(string id, TEntity entity, CancellationToken cancellationToken);
+        Task Update(string id, UpdateDefinition<TEntity> updateDefinition, CancellationToken cancellationToken);
     };
 }

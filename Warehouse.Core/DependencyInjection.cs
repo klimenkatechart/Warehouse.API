@@ -18,7 +18,8 @@ namespace Warehouse.Infrastructure
         {
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-            
+            services.AddTransient<IOrderRepository, OrderRepository>();
+
             return services;
         }
     }

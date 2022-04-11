@@ -36,7 +36,10 @@ namespace Warehouse.Infrastructure.Repositories
         {
             return await GetFiltered(predicate).FirstOrDefaultAsync(cancellationToken);
         }
-
+        public async Task<IList<TEntity>> GetAllWhere(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
+        {
+            return await GetFiltered(predicate).ToListAsync(cancellationToken);
+        }
         public async Task Insert(TEntity entity, CancellationToken cancellationToken)
         {
             await Collection.InsertOneAsync(entity, null, cancellationToken);
@@ -51,9 +54,9 @@ namespace Warehouse.Infrastructure.Repositories
         {
             await Collection.ReplaceOneAsync(GetFilterForId<TEntity>(id), entity, new ReplaceOptions { IsUpsert = true }, cancellationToken);            
         }
-        public async Task Update(string id, TEntity entity, CancellationToken cancellationToken)
+        public async Task Update(string id, UpdateDefinition<TEntity> updateDefinition, CancellationToken cancellationToken)
         {
-            await Collection.ReplaceOneAsync(GetFilterForId<TEntity>(id), entity, new ReplaceOptions { IsUpsert = true }, cancellationToken);
+            await Collection.UpdateOneAsync(GetFilterForId<TEntity>(id), updateDefinition, null, cancellationToken);
         }
         private IMongoQueryable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> predicate)
         {

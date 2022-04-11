@@ -10,6 +10,7 @@ namespace Warehouse.Domain.Enums
     {
         Pending,
         Approved,
-        Declined
+        InReview,
+        Declined        
     }
 }

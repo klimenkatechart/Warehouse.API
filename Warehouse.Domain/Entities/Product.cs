@@ -4,7 +4,7 @@ using Warehouse.Domain.Enums;
 
 namespace Warehouse.Domain.Entities
 {
-    public class Product : BaseEntity
+    public class Product : BaseEntity<Product>
     {
         public string? Name { get; set; }
         public string? Description { get; set; }

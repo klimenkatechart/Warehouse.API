@@ -28,31 +28,28 @@ namespace Warehouse.API.Controllers
         public async Task<ActionResult> GetAll()
         {
             return Ok(await _mediator.Send(new GetAllProductsQuery()));
-        }       
+        }
 
+        [HttpPost("items/{id}")]
+        public async Task<ActionResult> Insert(string id, [FromBody] int Ammount)
+        {
+            return Ok(await _mediator.Send(new SetItemsForProduct() { ProductId = id, Ammount = Ammount}));
+        }
+        [HttpPost("add-items/{id}")]
+        public async Task<ActionResult> AddItems(string id, [FromBody] int Ammount)
+        {
+            return Ok(await _mediator.Send(new AddItemsForproductCommand() { ProductId = id, Ammount = Ammount }));
+        }
         [HttpPost("insert")]
         public async Task<ActionResult> Insert([FromBody] ProductInputModel inputModel)
         {           
           return Ok(await _mediator.Send(new InsertProductCommand() { InputModel = inputModel }));
         }
-
-        [HttpPost("insert-range")]
-        public async Task<ActionResult> InsertRange([FromBody] IList<ProductInputModel> inputModel)
-        {
-            return Ok(await _mediator.Send(new InsertRangeOfProductsCommand() { InputModels = inputModel }));
-        }
-
+      
         [HttpPut("update/{id}")]
         public async Task<ActionResult> Update(string id, [FromBody] ProductInputModel inputModel)
         {
             return Ok(await _mediator.Send(new UpdateProductCommand() { Id = id, ProductInput = inputModel }));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(string id)
-        {
-            await _mediator.Send(new DeleteProductCommand() { id = id });
-            return NoContent();
         }
     }
 }
